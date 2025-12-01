@@ -1,6 +1,6 @@
 # Chess validator on Convex
 
-This project demonstrates how a non-trivial application—full chess move verification—can be implemented and executed on [Convex](https://convex.world/), a decentralised ledger with a Lisp-based smart-contract environment.
+This project demonstrates how a non-trivial application — full chess move verification — can be implemented and executed on [Convex](https://convex.world/), a decentralised ledger with a Lisp-based smart-contract environment.
 It serves both as a functional chess engine and as a practical reference for writing, testing, and deploying Convex actor code.
 
 ## 🎯 Project Goals
@@ -61,7 +61,7 @@ More differences are documented within the code and tests.
 
 ## Tests
 
-Both 'dev.jeroenvandijk.chess.validator.clj-test' and 'dev.jeroenvandijk.chess.validator.cvx-test' can run against 20k games from `games.txt` from Kaggle. 
+Both `dev.jeroenvandijk.chess.validator.clj-test` and `dev.jeroenvandijk.chess.validator.cvx-test` can run against 20k games from `games.txt` from [Kaggle](https://www.kaggle.com/datasets/datasnaek/chess/data). 
 
 There are also some manual tests in notebook-test. You can view the game state `via nextjournal.clerk` see **Dev** above.
 
