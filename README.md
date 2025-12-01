@@ -1,7 +1,7 @@
 # Chess validator on Convex
 
 This project demonstrates how a non-trivial application — full chess move verification — can be implemented and executed on [Convex](https://convex.world/), a decentralised ledger with a Lisp-based smart-contract environment.
-It serves both as a functional chess engine and as a practical reference for writing, testing, and deploying Convex actor code.
+It serves both as a functional chess engine and as a practical reference for writing and testing Convex code.
 
 ## 🎯 Project Goals
 
