@@ -1,0 +1,16 @@
+{:paths ["src" "resources"]
+ :deps {org.clojure/clojure {:mvn/version "1.12.0"}
+        borkdude/edamame {:mvn/version "1.5.35"}
+        world.convex/convex-core {:mvn/version "0.8.2"}
+        world.convex/cvm {:git/url "https://github.com/jeroenvandijk/convex.cljc"
+                          :git/sha "0efd5ba173ed1bf8ab2bdcad1037352b59e8f6dd"
+                          :deps/root "module/cvm"}}
+ :aliases {
+   :dev {:extra-paths ["development/src" "test"]
+         :extra-deps {io.github.nextjournal/clerk {:mvn/version "0.18.1150"}}}
+   :test {:extra-paths ["test"]
+          :extra-deps {lambdaisland/kaocha {:mvn/version "1.91.1392"}
+                       clj-python/libpython-clj {:mvn/version "2.026"}
+                       io.github.nextjournal/clerk {:mvn/version "0.18.1150"}
+                       io.github.matthewdowney/rich-comment-tests {:mvn/version "v1.0.3"}}
+          :main-opts ["-m" "kaocha.runner"]}}}

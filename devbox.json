@@ -1,0 +1,18 @@
+{
+  "$schema":  "https://raw.githubusercontent.com/jetify-com/devbox/0.15.0/.schema/devbox.schema.json",  
+  "packages": [
+    "python@3.14",
+  ],
+  "shell": {
+    "init_hook": [
+      "echo 'Welcome to devbox!' > /dev/null",
+      ". $VENV_DIR/bin/activate",
+      "pip install -r requirements.txt"
+    ],
+    "scripts": {
+      "test": [
+        "echo \"Error: no test specified\" && exit 1"
+      ]
+    }
+  }
+}

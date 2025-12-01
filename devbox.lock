@@ -1,0 +1,66 @@
+{
+  "lockfile_version": "1",
+  "packages": {
+    "github:NixOS/nixpkgs/nixpkgs-unstable": {
+      "last_modified": "2025-11-15T07:28:48Z",
+      "resolved": "github:NixOS/nixpkgs/1d4c88323ac36805d09657d13a5273aea1b34f0c?lastModified=1763191728&narHash=sha256-esRhOS0APE6k40Hs%2FjjReXg%2Brx%2BJ5LkWw7cuWFKlwYA%3D"
+    },
+    "python@3.14": {
+      "last_modified": "2025-10-22T20:59:19Z",
+      "plugin_version": "0.0.4",
+      "resolved": "github:NixOS/nixpkgs/01b6809f7f9d1183a2b3e081f0a1e6f8f415cb09#python314",
+      "source": "devbox-search",
+      "version": "3.14.0",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/7rai4cm476kqnldsy72v7f6nfvdyj7x3-python3-3.14.0",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/7rai4cm476kqnldsy72v7f6nfvdyj7x3-python3-3.14.0"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/62757miqpqnkr21mkvzqva2xjdqwxlsv-python3-3.14.0",
+              "default": true
+            },
+            {
+              "name": "debug",
+              "path": "/nix/store/5rnwkq9b4c3qbifhzgfqmkgws0fq9kbf-python3-3.14.0-debug"
+            }
+          ],
+          "store_path": "/nix/store/62757miqpqnkr21mkvzqva2xjdqwxlsv-python3-3.14.0"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/7sfklvafg6rknjh0712xhhg5nfh1ka8q-python3-3.14.0",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/7sfklvafg6rknjh0712xhhg5nfh1ka8q-python3-3.14.0"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/qr8r21z56anbmp1dji1kfyfi5wakshz5-python3-3.14.0",
+              "default": true
+            },
+            {
+              "name": "debug",
+              "path": "/nix/store/n1n81aqgrlhnski2630wdijnngzsbpqh-python3-3.14.0-debug"
+            }
+          ],
+          "store_path": "/nix/store/qr8r21z56anbmp1dji1kfyfi5wakshz5-python3-3.14.0"
+        }
+      }
+    }
+  }
+}
