@@ -48,12 +48,12 @@
          7 \h)
        (inc rank)))
 
+
 (defn file+rank->index [[file rank]]
   (+ file (* rank 8)))
 
 (defn index->file+rank [idx]
   [(rem idx 8) (quot idx 8)])
-
 
 
 (defn coord->index [coord]
@@ -64,11 +64,7 @@
   (file+rank->coord (index->file+rank idx)))
 
 
-
-
-
-
-;^:rct/test
+^:rct/test
 (comment
     ;; Why do comments not work? Macro should be ok?
   #_(coord->index "d5")
@@ -80,7 +76,7 @@
   ;(index->coord 50)
   )
 
-;; TODO subs
+
 (defn uci->coords [s]
   [(coord->index (slice s 0 2))
    (coord->index (slice s 2 4))])
@@ -96,14 +92,10 @@
       (conj uci0 nil))))
 
 
-;^:rct/test
-#_(comment
+^:rct/test
+(comment
   (uci->from+to "f7f8r") ;=> [53 61 :R]
   ,)
-
-
-
-
 
 
 (defn coords->uci [[from to promotion-piece]]
@@ -114,19 +106,14 @@
          :R \r
          :B \b} promotion-piece)))
 
-;; / Util
 
 (def char->piece
   {\p :bP \n :bN \b :bB \r :bR \q :bQ \k :bK
    \P :wP \N :wN \B :wB \R :wR \Q :wQ \K :wK})
 
 
-
-
-
-;; In convex lisp we'll have to do things a bit clunky (map int (vec "abcd")) instead of just map
-
 (def empty-board (vec (repeat 64 nil)))
+
 
 (defn board-str->board-vec [rank-str]
   (loop [chars (vec rank-str)
@@ -179,7 +166,6 @@
 (def black-queenside-castling (->index-move "e8c8"))
 
 
-
 ^:rct/test
 (comment
   ;; E.g. see https://lichess.org/analysis/fromPosition/rnbqkbnr/pp1p1ppp/8/8/2p1p2/8/PPP1PPPP/RNBQKBNR_w_KQkq_c6_0_3#8
@@ -198,11 +184,11 @@
    :wP :w :wN :w :wB :w :wR :w :wQ :w :wK :w})
 
 
-
 (defn within-bounds? [[x y]]
   (and 
    (<= -7 x 7)
    (<= -7 y 7)))
+
 
 (defn ray
   ([direction]
@@ -234,6 +220,7 @@
   ;; sort not available in CVM, also not needed here. Should we add it?
   #_(sort-by (juxt second first) (mapcat ray directions)))
 
+
 (def knight-deltas 
   [[2 -1]  [2 1]
    [1 -2]  [1 2]  
@@ -250,8 +237,6 @@
 (def bishop-directions [[-1 -1] [-1 1] [1 -1] [1 1]])
 (def rook-directions [[-1 0] [0 -1] [1 0] [0 1]])
 
-
-;(ray [-1 0]) ;; not recognized in CVM yet?
 
 (def bishop-deltas (rays bishop-directions))
 (def rook-deltas (rays rook-directions))
@@ -394,17 +379,7 @@
   (get-in possible-moves [:wN 1])       ;=> #{11 16 18}
   (get (map-positions knight-deltas) 1) ;=> #{11 16 18}
   
-
-  (spit "possible-moves.txt" (with-out-str   (clojure.pprint/pprint possible-moves)))
-  
   )
-#_(-> capture-moves
-
-    :wP
-    (get 44))
-#_(-> capture-moves
-    :bB 
-    (get 32))
 
 
 ^:rct/test
@@ -477,17 +452,12 @@
   ,)
 
 
- 
-
-;(uci->from+to "e4e5")
-
-;(piece->color nil)
-
 (defn index->file [idx]
   (rem idx 8))
 
 (defn index->rank [idx]
   (quot idx 8))
+
 
 ^:rct/test
 (comment
@@ -497,6 +467,7 @@
 
   (index->rank 8);=> 1
   ,)
+
 
 (defn rank->index [r]
   (* r 8))
@@ -562,8 +533,6 @@
     (contains? (set (betweens a b)) c)))
 
 
-
-
 ^:rct/test
 (comment
   (defn betweens' [a b]
@@ -586,8 +555,6 @@
   (between-tiles? "a1" "c3" "b2")       ;=> true
 
   )
-
-
 
 
 (def tiles-between
@@ -740,28 +707,6 @@
       (pinned?' "h4h5")) ;=> false
 
   ,)
-
-
-
-;; Basic filters
-;; - not from A to A
-;; - should have a piece
-;; - B should not be occipied by a piece of the same color as A
-;; - Move should be a legal move according to possible movements (including castling and en passant)
-;; - Move should not be blocked by any piece (not valid for Knight)
-;; - Move should not put king in chess (so either self-check or moving a pinned piece.
-
-(def empty-rank (vec (repeat 8 nil)))
-
-(comment
-
-  (path-blocked? (assoc empty-rank 7 :X) 0 7);=> true
-  (path-blocked? (assoc empty-rank 6 :X) 0 7);=> true
-  (path-blocked? (assoc empty-rank 6 :X) 7 1);=> true
-
-  (get-in capture-moves [:bP 12])
-  (get-in possible-moves [:bP 12]))
-
 
 
 (defn execute-castling [state king-from king-to castle-from castle-to]
@@ -920,9 +865,10 @@
                     [[from to] ep]))
                 (range 0 8))))
 
-;; REVIEW can be sets instead of vectors
+
 (def double-push-ep 
   (merge white-double-push-ep black-double-push-ep))
+
 
 ;; Pre-compute?
 (defn double-push->ep-coords [push-from push-to]
@@ -934,6 +880,7 @@
       7 #{left}
 
       #{right left})))
+
 
 ^:rct/test
 (comment
@@ -1026,47 +973,34 @@
    (let [ep-before (:ep state)
          [ok? description state] (explain-move* state from to promotion-piece)
          side (:side state)]
-     ;; - toggle side
-     ;; - calculate ep option, any piece next to double opening?
-     ;; - do extra moves with castling
-     ;; - capture piece in case of en passant
-     ;; - promotion, replace piece with chosen piece
-     ;; For SAN notation we need to also calculate checkmate etc.
 
-     ;; REVIEW when we have move implemented we can test against it. After every move we can generate a FEN notation and check for all legal moves.
+     ;; For SAN notation we would need to also calculate capture, check, checkmate etc.
      (if ok?
        (update
         (assoc state
-               :side (switch side :w :b :b :w)
-
-
-                ;; REVIEW Handle in move pawn?
-                ;; :ep nil
-               )
+               :side (switch side :w :b :b :w))
         :ep (fn [ep-after]
               (if (= ep-before ep-after)
                 nil
                 ep-after)))
-        ;; Check for EP options
-        ;; (= description :double-pawn-push)
 
        (fail :ASSERT (str "Invalid move " description))))))
-
 
 
 (defn move [state uci]
   (apply move* state (uci->from+to uci)))
 
+
 (def start-fen "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
+
 
 (defn moves 
   ([ucis]
    (moves (fen->state start-fen) ucis))
 
   ([state ucis]
-   (reduce move state ucis))
+   (reduce move state ucis)))
 
- )
 
 (defn piece->char [piece]
   (switch piece 
@@ -1083,15 +1017,12 @@
     :wK \K
     :wP \P))
 
-(castling->str #{})
-
-(defn reverse [coll]
-  (reduce conj () coll))
 
 (def fen-positions 
   (mapv (fn [i]
           (let [[file rank] [(rem i 8) (- 7 (quot i 8))]]
             (+ file (* rank 8)))) all-positions))
+
 
 (defn board-vec->board-str [board]
   (let [[s cnt] (reduce (fn [[s cnt] i]
@@ -1141,9 +1072,6 @@
          " "
          "0" ;; TODO counter 1
          )))
-
-
-
 
 
 ^:rct/test
@@ -1227,10 +1155,6 @@
   )
 
 
-(uci->coords "e1c1")
-
-(get-in possible-moves [:wB 5])
-
 (defn valid-move?*
   ([state from to]
    (valid-move?* state from to nil))
@@ -1242,8 +1166,6 @@
 ^:rct/test
 (comment
   
-
-
   (valid-move? "rnbqkbnr/pppp1ppp/8/b7/8/8/PPPPP1PP/RNBQK2R w KQkq - 0 1" "d2d3") ;=> false
   (valid-move? "4k3/8/8/8/8/8/r2P4/4K3 w - - 0 1" "e1e2") ;=> true
   (valid-move? "4k3/8/8/8/8/8/8/1n2K3 w - - 0 1" "e1d2") ;=> false
@@ -1259,43 +1181,20 @@
   (valid-move? "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" "e2e4"))
 
 
-
-
-
-
-
-^:rct/test
-(comment
-
-  ;; FIXME
-  #_(valid-move?* {:board [:wP nil] :side :w :ep #{[0 1]}} 0 1) ;=> true
-
-
-  ;; 4 castling options (
-  #_(valid-move?* {:board [:wP nil] :side :w 
-
-                 :castling 
-
-
-                 #{[0 1]}} 0 1) ;=> true
-  ,)
-
-
-
-
-
-
 (defn valid-move? [fen uci]
   (let [state (fen->state fen)
         [from to promotion-piece] (uci->from+to uci)]
     (valid-move?* state from to promotion-piece)))
+
 
 (defn explain-move [fen uci]
   (let [state (fen->state fen)
         [from to promotion-piece] (uci->from+to uci)]
     (second (explain-move* state from to promotion-piece))))
 
+
 (def start-state (fen->state start-fen))
+
 
 (defn game [uci-str]
   (reduce move start-state (do ;take 1 
