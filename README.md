@@ -63,7 +63,7 @@ More differences are documented within the code and tests.
 
 Both `dev.jeroenvandijk.chess.validator.clj-test` and `dev.jeroenvandijk.chess.validator.cvx-test` can run against 20k games from `games.txt` from [Kaggle](https://www.kaggle.com/datasets/datasnaek/chess/data). 
 
-There are also some manual tests in notebook-test. You can view the game state `via nextjournal.clerk` see **Dev** above.
+There are also some manual tests in `notebook-test`. For these tests you can view the game state via `nextjournal.clerk` see **Dev** below.
 
 The tests use the very mature `python-chess` library via `libpython-clj` to verify we can generate the exact same legal moves. To isolate the Python version we use [Devbox](https://www.jetify.com/devbox)
 ```
@@ -73,7 +73,7 @@ clj -M:test
 
 ## Dev
 
-See `development/src/user.clj`
+See `nextjournal/clerk` instructions in `development/src/user.clj`
 
 ```
 devbox shell
