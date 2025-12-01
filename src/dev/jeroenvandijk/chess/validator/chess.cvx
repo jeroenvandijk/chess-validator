@@ -175,8 +175,6 @@
 
 (defn check? [state from to] (let [board (:board state) side (:side state) king-positions (:king-positions state) king-position (get king-positions side)] (check?0 (assoc state :board (assoc board from nil to (nth board from)) :king-positions (assoc king-positions side (if (= king-position from) to king-position))))))
 
-(def empty-rank (vec (repeat 8 nil)))
-
 (defn execute-castling [state king-from king-to castle-from castle-to] (let [side (:side state) castling (:castling state) board (:board state) king-positions (:king-positions state)] (assoc state :castling (switch side :w (disj castling white-queenside-castling white-kingside-castling) :b (disj castling black-queenside-castling black-kingside-castling)) :board (assoc board king-from nil king-to (nth board king-from) castle-from nil castle-to (nth board castle-from)) :king-positions (assoc king-positions side king-to))))
 
 (defn explain-castling [state from to] (let [castling (:castling state)] (when (contains? castling [from to]) (let [board (:board state)] (when-let [f (get {white-kingside-castling (fn [] (cond (path-blocked? board from 7) [false :castling-blocked] (check?0 state) [false :castling-in-check] (check? state from 5) [false :castling-through-check] :else (let [state0 (execute-castling state from to 7 5)] (if (check?0 state0) [false :castling-through-check] [true :castling-white-kingside state0])))), white-queenside-castling (fn [] (cond (path-blocked? board from 0) [false :castling-blocked] (check?0 state) [false :castling-in-check] (check? state from 3) [false :castling-through-check] :else (let [state0 (execute-castling state from to 0 3)] (if (check?0 state0) [false :castling-through-check] [true :castling-white-queenside state0])))), black-kingside-castling (fn [] (cond (path-blocked? board from 63) [false :castling-blocked] (check?0 state) [false :castling-in-check] (check? state from 61) [false :castling-through-check] :else (let [state0 (execute-castling state from to 63 61)] (if (check?0 state0) [false :castling-through-check] [true :castling-black-kingside state0])))), black-queenside-castling (fn [] (cond (path-blocked? board from 56) [false :castling-blocked] (check?0 state) [false :castling-in-check] (check? state from 59) [false :castling-through-check] :else (let [state0 (execute-castling state from to 56 59)] (if (check?0 state0) [false :castling-through-check] [true :castling-black-queenside state0]))))} [from to])] (f))))))
@@ -209,19 +207,11 @@
 
 (defn piece->char [piece] (switch piece :bR \r :bB \b :bN \n :bQ \q :bK \k :bP \p :wR \R :wB \B :wN \N :wQ \Q :wK \K :wP \P))
 
-(castling->str #{})
-
-(defn reverse [coll] (reduce conj () coll))
-
 (def fen-positions (mapv (fn [i] (let [[file rank] [(rem i 8) (- 7 (quot i 8))]] (+ file (* rank 8)))) all-positions))
 
 (defn board-vec->board-str [board] (let [[s cnt] (reduce (fn [[s cnt] i] (let [[s cnt] (if (zero? (mod i 8)) [(str s (if (zero? cnt) "" cnt) (if (= i 56) "" "/")) 0] [s cnt])] (if-let [piece (nth board i)] [(str s (if (zero? cnt) "" cnt) (piece->char piece)) 0] [s (inc cnt)]))) ["" 0] fen-positions)] (str s (if (zero? cnt) "" cnt))))
 
 (defn state->fen [state] (let [board (:board state) side (:side state) castling (:castling state) ep (:ep state)] (str (board-vec->board-str board) " " (name side) " " (castling->str castling) " " (or (when-let [idx (get-in (vec ep) [0 1])] (index->coord idx)) "-") " " "0" " " "0")))
-
-(uci->coords "e1c1")
-
-(get-in possible-moves [:wB 5])
 
 (defn valid-move?* ([state from to] (valid-move?* state from to nil)) ([state from to promotion-piece] (first (explain-move* state from to promotion-piece))))
 
